@@ -1,5 +1,466 @@
 <!DOCTYPE html>
-<html>
-<head><title>Vocab Stash</title></head>
-<body><h1>Vocab Stash</h1><p>Coming soon.</p></body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocab Stash – Your Personal Vocabulary Notebook</title>
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      background: #fcfcfa;
+      color: #1a1a1a;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    /* ─── Layout ─── */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── Nav ─── */
+    .nav {
+      padding: 20px 0;
+      border-bottom: 2px solid #1a1a1a;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #1a1a1a;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color: #999;
+      text-decoration: none;
+      border-bottom: 1px dotted #ccc;
+      transition: all 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: #1a1a1a;
+      border-bottom-color: #1a1a1a;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 72px 0 56px;
+      text-align: center;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #fcfcfa;
+      background: #1a1a1a;
+      padding: 4px 14px;
+      border-radius: 1px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      font-style: italic;
+      color: #666;
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 12px 36px;
+      font-size: 13px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #fcfcfa;
+      background: #1a1a1a;
+      border: 2px solid #1a1a1a;
+      border-radius: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .hero-cta:hover {
+      background: #fcfcfa;
+      color: #1a1a1a;
+    }
+
+    /* ─── Section ─── */
+    .section {
+      padding: 56px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #aaa;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-size: 26px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: -0.3px;
+    }
+
+    /* ─── Features ─── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 40px;
+    }
+
+    .feature {
+      padding: 0;
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .feature h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #1a1a1a;
+    }
+
+    .feature p {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    /* ─── How It Works ─── */
+    .steps {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      color: #fcfcfa;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .step h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .step p {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.5;
+    }
+
+    /* ─── Contact ─── */
+    .contact-section {
+      text-align: center;
+      padding: 56px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .contact-section p {
+      font-size: 15px;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 24px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-btn {
+      display: inline-block;
+      padding: 10px 28px;
+      font-size: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      color: #1a1a1a;
+      background: #fcfcfa;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .contact-btn:hover {
+      background: #1a1a1a;
+      color: #fcfcfa;
+    }
+
+    /* ─── Coffee ─── */
+    .coffee-section {
+      text-align: center;
+      padding: 48px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .coffee-section p {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .coffee-btn {
+      display: inline-block;
+      padding: 10px 28px;
+      font-size: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      color: #1a1a1a;
+      background: #fcfcfa;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .coffee-btn:hover {
+      background: #1a1a1a;
+      color: #fcfcfa;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      padding: 28px 0;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 11px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color: #bbb;
+    }
+
+    .footer a {
+      color: #999;
+      text-decoration: none;
+      border-bottom: 1px dotted #ccc;
+      transition: all 0.15s ease;
+    }
+
+    .footer a:hover {
+      color: #1a1a1a;
+      border-bottom-color: #1a1a1a;
+    }
+
+    .footer-links {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 11px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 30px; }
+      .hero p { font-size: 16px; }
+      .features-grid { grid-template-columns: 1fr; gap: 24px; }
+      .nav-links { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="#" class="nav-brand">Vocab Stash</a>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hero -->
+  <div class="container">
+    <section class="hero">
+      <div class="hero-badge">Free Chrome Extension</div>
+      <h1>Your personal vocabulary&nbsp;notebook</h1>
+      <p>Highlight any word while browsing the web. Save it, translate it, tag&nbsp;it&nbsp;— and build your vocabulary one&nbsp;page at a&nbsp;time.</p>
+      <a href="https://chrome.google.com/webstore" target="_blank" class="hero-cta">Add to Chrome — It's Free</a>
+    </section>
+  </div>
+
+  <!-- Features -->
+  <div class="container">
+    <section class="section" id="features">
+      <div class="section-label">Why Vocab Stash</div>
+      <h2>Everything you need,<br>nothing you don't</h2>
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Save words instantly</h3>
+          <p>Highlight a word on any webpage and save it with a right-click. Add your own translation, notes, and tags.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Organize with tags</h3>
+          <p>Tag words by topic, difficulty, language, or anything else. Filter your list in a single click.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Search &amp; filter</h3>
+          <p>Find any word instantly. Filter by date or tag to review exactly what you need.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Export to CSV</h3>
+          <p>Download your entire word list as a spreadsheet. Import it into Anki, Quizlet, or any flashcard app.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Works on any site</h3>
+          <p>News articles, blog posts, online textbooks — save vocabulary from wherever you're reading.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Light &amp; dark themes</h3>
+          <p>A clean, distraction-free interface that matches how you like to work — day or night.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- How It Works -->
+  <div class="container">
+    <section class="section" id="how-it-works">
+      <div class="section-label">Getting Started</div>
+      <h2>Three steps. That's it.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div>
+            <h3>Highlight a word</h3>
+            <p>Select any word or phrase on a webpage while you're reading.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div>
+            <h3>Right-click → Add to Vocab Stash</h3>
+            <p>A small form appears. Type your translation, add notes and tags, and hit save.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div>
+            <h3>Review anytime</h3>
+            <p>Click the Vocab Stash icon in your toolbar to browse, search, and export your growing word list.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Contact -->
+  <div class="container">
+    <section class="contact-section" id="contact">
+      <div class="section-label">Feedback &amp; Support</div>
+      <p>Found a bug? Have a feature idea? Just want to say hello? I would love to hear from&nbsp;you.</p>
+      <a href="mailto:vocabstashextension@gmail.com" class="contact-btn">✉&ensp;vocabstashextension@gmail.com</a>
+    </section>
+  </div>
+
+  <!-- Buy Me a Coffee -->
+  <div class="container">
+    <section class="coffee-section">
+      <div class="section-label">Support the Project</div>
+      <p>Vocab Stash is free and always will be.<br>If it helped you, consider buying me a&nbsp;coffee&nbsp;☕</p>
+      <a href="https://buymeacoffee.com/vocabstash" target="_blank" class="coffee-btn">Buy Me a Coffee</a>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <div class="container">
+    <footer class="footer">
+      <p>&copy; 2025 Vocab Stash</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:vocabstashextension@gmail.com">Contact</a>
+        <a href="https://buymeacoffee.com/vocabstash" target="_blank">Buy Me a Coffee ☕</a>
+      </div>
+    </footer>
+  </div>
+
+</body>
 </html>
